@@ -20,15 +20,15 @@ export default function Home() {
           </div>
           <div className="hero-text">
             <h1>Hi, I'm Doug Sellers</h1>
-            <p>Software Engineer • Builder • Learner</p>
+            <p>Software Engineer • Builder • Learner • NYC 🍎</p>
           </div>
         </div>
       </section>
 
       <section>
-        <h2>What I’m focused on</h2>
+        <h2>What I'm focused on</h2>
         <p>
-          Software Engineer II at USAA (Remote). I build reliable systems and UI, steward CI/CD, and lead SRE
+          Software Engineer II at USAA, working from NYC. I build reliable systems and UI, steward CI/CD, and lead SRE
           practices like SLO monitoring, canary deploys, and feature flags. Recently, I’ve been creating React 18
           experiences and internal C#/.NET libraries that speed up delivery across teams.
         </p>
