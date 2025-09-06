@@ -68,6 +68,9 @@ body {
   text-decoration: none;
   font-weight: 700;
   letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .nav-links {
@@ -90,6 +93,94 @@ body {
   color: var(--text);
   background: color-mix(in oklab, var(--accent) 18%, transparent);
   transition: background-color 220ms ease, color 220ms ease;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card);
+  display: grid;
+  place-items: center;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.avatar-fallback {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.hamburger {
+  width: 40px;
+  height: 32px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0 6px;
+  cursor: pointer;
+}
+.hamburger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--text);
+  border-radius: 2px;
+}
+
+.hamburger-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.6rem 0.7rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px color-mix(in oklab, black 35%, transparent);
+  z-index: 20;
+}
+
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+}
+.icon-link:hover {
+  outline: 2px solid color-mix(in oklab, var(--accent) 32%, transparent);
+}
+.icon-link img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Invert GitHub logo in dark theme for stronger contrast */
+html[data-theme='dark'] .icon-link.github img {
+  filter: invert(1);
 }
 
 /* Sliding indicator with slight jiggle */
@@ -204,6 +295,21 @@ body {
   padding: 2rem 0 1rem;
 }
 
+.photo {
+  width: 140px;
+  height: 140px;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  border: 2px solid var(--border);
+  background: var(--card);
+}
+
 .photo-placeholder {
   width: 140px;
   height: 140px;
@@ -238,6 +344,27 @@ section {
   border-radius: 12px;
   padding: 1rem;
   transition: background-color 320ms ease, border-color 320ms ease, color 320ms ease;
+}
+
+/* Ensure extra horizontal breathing room for About and Contact */
+.about,
+.contact {
+  padding-left: calc(1rem + 6px);
+  padding-right: calc(1rem + 6px);
+}
+
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+.tech-grid h3 { margin: 0 0 0.5rem; }
+.tech-grid ul { margin: 0; padding-left: 1.1rem; }
+
+@media (max-width: 640px) {
+  .tech-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .about h2,
@@ -400,9 +527,96 @@ section {
     text-align: center;
   }
 
+  .photo {
+    margin: 0 auto;
+  }
+
   .photo-placeholder {
     margin: 0 auto;
   }
+}
+
+/* Add horizontal breathing room for navbar on small screens */
+@media (max-width: 768px) {
+  .navbar .container {
+    padding-left: calc(1.5rem + env(safe-area-inset-left));
+    padding-right: calc(1.5rem + env(safe-area-inset-right));
+  }
+}
+
+/* Mobile drawer (slide-out) */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  /* hide small popover on mobile */
+  .hamburger-menu { display: none; }
+
+  .mobile-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: color-mix(in oklab, black 55%, transparent);
+    opacity: 1;
+  z-index: 9997;
+  }
+  .mobile-drawer {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: min(84vw, 360px);
+    background: transparent; /* inner panel provides surface */
+    border-left: none;
+  box-shadow: none; /* avoid faint box behind panel in light mode */
+    transform: translateX(0);
+  z-index: 9998;
+    display: grid;
+    align-content: start;
+    padding: 1rem;
+    animation: drawer-in 220ms cubic-bezier(.2,.8,.2,1);
+  }
+  .drawer-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.75rem;
+    box-shadow: 0 10px 28px color-mix(in oklab, black 35%, transparent);
+  }
+  @keyframes drawer-in {
+    from { transform: translateX(16px); opacity: 0.92; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .drawer-title { font-weight: 700; }
+  .drawer-close {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+  }
+  .drawer-links {
+    display: grid;
+  gap: 0.75rem;
+  padding: 0.5rem 0 1rem 0;
+  }
+  .drawer-links a {
+    color: var(--text);
+    text-decoration: none;
+  padding: 0.8rem 0.9rem; /* larger tap targets */
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .drawer-links a.active,
+  .drawer-links a:hover { background: color-mix(in oklab, var(--accent) 18%, transparent); }
+  .drawer-icons { display: flex; gap: 0.75rem; }
 }
 
 /* Visually attach dropdown to the button when open */
