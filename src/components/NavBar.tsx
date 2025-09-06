@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react'
 import GitHubIcon from '../assets/github.svg'
 import LinkedInIcon from '../assets/linkedin.svg'
 import { IconFileTypePdf } from '@tabler/icons-react'
-import profilePhoto from '../assets/profile-photo.jpg'
+import profilePhoto from '../assets/profile-photo.svg'
 
 export default function NavBar() {
   const { theme, toggle } = useTheme()
