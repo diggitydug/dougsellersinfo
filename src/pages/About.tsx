@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 export default function About() {
-  const [funFact, setFunFact] = useState<string | null>(null)
+  const [funFact, setFunFact] = useState<any>(null)
   const [loading, setLoading] = useState(false)
   const [inputId, setInputId] = useState('')
 
@@ -11,8 +11,8 @@ export default function About() {
       const endpoint = 'https://api.dougsellers.dev/facts'
       const url = specificId ? `${endpoint}?id=${specificId}` : endpoint
       const response = await fetch(url)
-      const data = await response.json()
-      setFunFact(data)
+  const data = await response.json()
+  setFunFact(data)
       
     } catch (error) {
       setFunFact("Error loading fun fact. Please try again later.")
@@ -128,9 +128,18 @@ export default function About() {
             background: 'var(--bg)', 
             border: '1px solid var(--border)', 
             borderRadius: '8px',
-            marginTop: '1rem'
+            marginTop: '1rem',
+            fontSize: '1rem',
+            fontFamily: 'monospace',
+            color: 'var(--text)',
+            overflowX: 'auto'
           }}>
-            <strong>Fun Fact:</strong> {funFact}
+            <strong>API Response:</strong>
+            <pre style={{ margin: '0.5rem 0 0', background: 'var(--card)', padding: '1rem', borderRadius: '8px', color: 'var(--text)', fontSize: '0.95rem' }}>
+              <code>
+                {JSON.stringify(funFact, null, 2)}
+              </code>
+            </pre>
           </div>
         )}
 
