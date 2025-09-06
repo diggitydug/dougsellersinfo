@@ -3,20 +3,17 @@ import { useState } from 'react'
 export default function About() {
   const [funFact, setFunFact] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [inputId, setInputId] = useState('')
 
   const handleGetFunFact = async (specificId?: string) => {
     setLoading(true)
     try {
-      // Future API call will be:
-      // const endpoint = 'https://api.dougsellers.info/fun-facts'
-      // const url = specificId ? `${endpoint}?id=${specificId}` : endpoint
-      // const response = await fetch(url)
-      // const data = await response.json()
-      // setFunFact(data.text)
+      const endpoint = 'https://api.dougsellers.dev/facts'
+      const url = specificId ? `${endpoint}?id=${specificId}` : endpoint
+      const response = await fetch(url)
+      const data = await response.json()
+      setFunFact(data)
       
-      // For now, simulate loading and show under construction message
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      setFunFact("🚧 This feature is under construction! Coming soon...")
     } catch (error) {
       setFunFact("Error loading fun fact. Please try again later.")
     } finally {
@@ -98,7 +95,7 @@ export default function About() {
           to serve random fun facts about me. You can also request specific facts by ID.
         </p>
         
-        <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
           <button 
             className="btn-primary" 
             onClick={() => handleGetFunFact()}
@@ -107,16 +104,23 @@ export default function About() {
           >
             {loading ? 'Loading...' : 'Get Random Fun Fact'}
           </button>
-          
+          <input
+            type="text"
+            placeholder="Enter specific ID"
+            value={inputId}
+            onChange={e => setInputId(e.target.value)}
+            style={{ padding: '0.6rem 0.7rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', minWidth: '140px' }}
+            disabled={loading}
+          />
           <button 
             className="btn-primary" 
-            onClick={() => handleGetFunFact('1')}
-            disabled={loading}
+            onClick={() => handleGetFunFact(inputId)}
+            disabled={loading || !inputId}
             style={{ opacity: loading ? 0.6 : 1, background: 'var(--muted)' }}
           >
-            Get Specific Fact (ID: 1)
+            Get Specific Fact
           </button>
-        </div>
+  </div>
 
         {funFact && (
           <div style={{ 
@@ -138,7 +142,7 @@ export default function About() {
               <li>Endpoint: <code>GET /fun-facts</code> (random) or <code>GET /fun-facts?id=&lt;id&gt;</code> (specific)</li>
               <li>AWS API Gateway handles HTTP requests and CORS</li>
               <li>Lambda function processes requests and queries DynamoDB</li>
-              <li>DynamoDB stores fun facts with auto-generated IDs</li>
+              <li>DynamoDB stores fun facts with specific IDs</li>
               <li>CloudWatch provides monitoring and error tracking</li>
             </ul>
             <p><strong>Frontend Integration:</strong></p>
