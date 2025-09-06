@@ -68,12 +68,14 @@ export default function About() {
         </div>
 
         <div>
-          <h3>Future Backend (Planned)</h3>
+          <h3>Backend</h3>
           <ul>
             <li>AWS API Gateway - REST API endpoints</li>
             <li>AWS Lambda - Serverless functions</li>
             <li>DynamoDB - NoSQL database</li>
             <li>CloudWatch - Monitoring & logging</li>
+            <li>Route 53 - DNS management</li>
+            <li>Golang - Programming Language used for Lambda functions</li>
           </ul>
         </div>
 
