@@ -137,7 +137,7 @@ export default function About() {
             overflowX: 'auto'
           }}>
             <strong>API Response:</strong>
-            <pre style={{ margin: '0.5rem 0 0', background: 'var(--card)', padding: '1rem', borderRadius: '8px', color: 'var(--text)', fontSize: '0.95rem' }}>
+            <pre style={{ margin: '0.5rem 0 0', background: 'var(--card)', padding: '1rem', borderRadius: '8px', color: 'var(--text)', fontSize: '0.95rem', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
               <code>
                 {JSON.stringify(funFact, null, 2)}
               </code>
