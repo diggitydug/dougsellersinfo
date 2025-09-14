@@ -41,7 +41,7 @@ export default function Contact() {
         subject = 'Portfolio contact'
     }
     // Open mail client with contextual subject
-    window.location.href = `mailto:dougsellers01@gmail.com?subject=${encodeURIComponent(subject + ' - ' + name)}&body=${encodeURIComponent(message)}%0D%0A%0D%0AFrom:%20${encodeURIComponent(email)}`
+    window.location.href = `mailto:doug@dougsellers.info?subject=${encodeURIComponent(subject + ' - ' + name)}&body=${encodeURIComponent(message)}%0D%0A%0D%0AFrom:%20${encodeURIComponent(email)}`
   }
 
   return (
