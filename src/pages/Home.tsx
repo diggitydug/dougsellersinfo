@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import profilePhoto from '../assets/profile-photo.jpg'
+import './Home.css'
 
 export default function Home() {
   const [imgError, setImgError] = useState(false)

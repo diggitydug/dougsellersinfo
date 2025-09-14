@@ -1,128 +1,16 @@
-import { useState, useEffect } from 'react'
-import { CognitoIdentityClient, GetIdCommand, GetCredentialsForIdentityCommand } from '@aws-sdk/client-cognito-identity'
-import { SignatureV4 } from '@aws-sdk/signature-v4'
-import { Sha256 } from '@aws-crypto/sha256-browser'
+import { useState } from 'react'
+import { useAWSAuth, useFacts } from '../api/facts'
+import './About.css'
 
 export default function About() {
-  const [funFact, setFunFact] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
   const [inputId, setInputId] = useState('')
-  const [authCredentials, setAuthCredentials] = useState<any>(null)
-  const [authLoading, setAuthLoading] = useState(true)
-  const [authError, setAuthError] = useState<string | null>(null)
-
-  // AWS Cognito Identity Pool Configuration
-  const AWS_CONFIG = {
-    region: 'us-east-1',
-    identityPoolId: 'us-east-1:2e47788f-4c4a-4133-b6eb-792d7acc5dd4',
-  }
-
-  // Initialize AWS Cognito Identity Pool authentication
-  useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        setAuthLoading(true)
-        setAuthError(null)
-
-        // Create Cognito Identity client
-        const cognitoClient = new CognitoIdentityClient({
-          region: AWS_CONFIG.region,
-        })
-
-        // Get identity ID for guest access
-        const getIdCommand = new GetIdCommand({
-          IdentityPoolId: AWS_CONFIG.identityPoolId,
-        })
-        
-        const identityResponse = await cognitoClient.send(getIdCommand)
-        const identityId = identityResponse.IdentityId
-
-        if (!identityId) {
-          throw new Error('Failed to get identity ID')
-        }
-
-        // Get credentials for the identity
-        const getCredentialsCommand = new GetCredentialsForIdentityCommand({
-          IdentityId: identityId,
-        })
-        
-        const credentialsResponse = await cognitoClient.send(getCredentialsCommand)
-        const credentials = credentialsResponse.Credentials
-
-        if (!credentials || !credentials.SessionToken) {
-          throw new Error('Failed to get credentials')
-        }
-
-        // Store full credentials for signing requests
-        setAuthCredentials({
-          accessKeyId: credentials.AccessKeyId,
-          secretAccessKey: credentials.SecretKey,
-          sessionToken: credentials.SessionToken,
-          identityId: identityId
-        })
-        console.log('AWS Auth successful. Identity ID:', identityId)
-        
-      } catch (error) {
-        console.error('AWS Auth failed:', error)
-        setAuthError(error instanceof Error ? error.message : 'Authentication failed')
-      } finally {
-        setAuthLoading(false)
-      }
-    }
-
-    initializeAuth()
-  }, [])
+  
+  // Use the custom hooks from our API module
+  const { credentials, loading: authLoading, error: authError } = useAWSAuth()
+  const { data: funFact, loading, error, getFact } = useFacts()
 
   const handleGetFunFact = async (specificId?: string) => {
-    if (!authCredentials) {
-      setFunFact("Authentication required. Please wait for auth to complete.")
-      return
-    }
-
-    setLoading(true)
-    try {
-      const endpoint = 'https://api.dougsellers.dev/facts'
-      const url = specificId ? `${endpoint}?id=${specificId}` : endpoint
-      
-      // Create a signed request using AWS Signature V4
-      const signer = new SignatureV4({
-        credentials: authCredentials,
-        region: AWS_CONFIG.region,
-        service: 'execute-api',
-        sha256: Sha256,
-      })
-
-      const request = {
-        method: 'GET',
-        hostname: 'api.dougsellers.dev',
-        path: specificId ? `/facts?id=${specificId}` : '/facts',
-        protocol: 'https:',
-        headers: {
-          'Content-Type': 'application/json',
-          'host': 'api.dougsellers.dev',
-        },
-      }
-
-      const signedRequest = await signer.sign(request)
-      
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: signedRequest.headers,
-      })
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-      
-      const data = await response.json()
-      setFunFact(data)
-      
-    } catch (error) {
-      console.error('API call failed:', error)
-      setFunFact("Error loading fun fact. Please try again later.")
-    } finally {
-      setLoading(false)
-    }
+    await getFact(specificId)
   }
 
   return (
@@ -206,39 +94,38 @@ export default function About() {
           <strong>Auth Status:</strong> 
           {authLoading && <span style={{ color: 'var(--muted)' }}> Authenticating...</span>}
           {authError && <span style={{ color: '#ff4444' }}> Error: {authError}</span>}
-          {authCredentials && !authLoading && <span style={{ color: 'var(--accent)' }}> ✓ Authenticated</span>}
+          {credentials && !authLoading && <span style={{ color: 'var(--accent)' }}> ✓ Authenticated</span>}
         </div>
         
         <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
           <button 
             className="btn-primary" 
             onClick={() => handleGetFunFact()}
-            disabled={loading || authLoading || !authCredentials}
-            style={{ opacity: (loading || authLoading || !authCredentials) ? 0.6 : 1 }}
+            disabled={loading || authLoading || !credentials}
+            style={{ opacity: (loading || authLoading || !credentials) ? 0.6 : 1 }}
           >
             {loading ? 'Loading...' : 'Get Random Fun Fact'}
           </button>
-          {/* Temporarily hidden - specific fact functionality
           <input
             type="text"
             placeholder="Enter specific ID"
             value={inputId}
             onChange={e => setInputId(e.target.value)}
             style={{ padding: '0.6rem 0.7rem', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg)', color: 'var(--text)', minWidth: '140px' }}
-            disabled={loading || authLoading || !authCredentials}
+            disabled={loading || authLoading || !credentials}
           />
           <button 
             className="btn-primary" 
             onClick={() => handleGetFunFact(inputId)}
-            disabled={loading || !inputId || authLoading || !authCredentials}
-            style={{ opacity: (loading || !inputId || authLoading || !authCredentials) ? 0.6 : 1, background: 'var(--muted)' }}
+            disabled={loading || !inputId || authLoading || !credentials}
+            style={{ opacity: (loading || !inputId || authLoading || !credentials) ? 0.6 : 1, background: 'var(--muted)' }}
           >
             Get Specific Fact
           </button>
-          */}
+        
         </div>
 
-        {funFact && (
+        {(funFact || error) && (
           <div style={{ 
             padding: '1rem', 
             background: 'var(--bg)', 
@@ -253,7 +140,7 @@ export default function About() {
             <strong>API Response:</strong>
             <pre style={{ margin: '0.5rem 0 0', background: 'var(--card)', padding: '1rem', borderRadius: '8px', color: 'var(--text)', fontSize: '0.95rem', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
               <code>
-                {JSON.stringify(funFact, null, 2)}
+                {error ? `Error: ${error}` : JSON.stringify(funFact, null, 2)}
               </code>
             </pre>
           </div>
