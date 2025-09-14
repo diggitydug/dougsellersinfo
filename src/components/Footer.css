@@ -1,0 +1,26 @@
+/* Footer Component Styles */
+.footer {
+  border-top: 1px solid var(--border);
+  background: color-mix(in oklab, var(--bg) 86%, transparent);
+}
+
+.footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
+}
+
+.socials {
+  display: flex;
+  gap: 1rem;
+}
+
+.socials a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.socials a:hover {
+  color: var(--accent);
+}

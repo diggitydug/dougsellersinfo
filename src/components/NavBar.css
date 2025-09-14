@@ -1,0 +1,325 @@
+/* Nav */
+.navbar {
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(8px);
+  background: color-mix(in oklab, var(--bg) 86%, transparent);
+  border-bottom: 1px solid var(--border);
+  z-index: 10;
+}
+
+.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.75rem 0;
+}
+
+.brand {
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  position: relative;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  padding: 0.6rem 0.8rem;
+  margin: 0.5rem 0;
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: var(--text);
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  position: relative;
+  margin-left: 1rem;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card);
+  display: grid;
+  place-items: center;
+  margin: 0.5rem 0.25rem;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.avatar-fallback {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.hamburger {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 0 6px;
+  margin: 0.5rem 0.25rem;
+  cursor: pointer;
+}
+.hamburger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: var(--text);
+  border-radius: 2px;
+}
+
+.hamburger-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.6rem 0.7rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px color-mix(in oklab, black 35%, transparent);
+  z-index: 20;
+}
+
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+}
+.icon-link:hover {
+  outline: 2px solid color-mix(in oklab, var(--accent) 32%, transparent);
+}
+.icon-link img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Invert GitHub logo in dark theme for stronger contrast */
+html[data-theme='dark'] .icon-link.github img {
+  filter: invert(1);
+}
+
+/* Sliding indicator with slight jiggle */
+.nav-indicator {
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 2px;
+  width: 0;
+  transition: transform 260ms cubic-bezier(.2,.8,.2,1);
+  pointer-events: none;
+}
+.nav-indicator-inner {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 260ms cubic-bezier(.2,.8,.2,1);
+}
+.nav-indicator-inner.bump {
+  animation: nav-bump 280ms ease-out;
+}
+@keyframes nav-bump {
+  0% { transform: translateX(0) scaleX(1); }
+  50% { transform: translateX(0) scaleX(1.08); }
+  100% { transform: translateX(0) scaleX(1); }
+}
+
+/* Teardrop ripple animation */
+.nav-ripple {
+  position: absolute;
+  left: calc(var(--rx) - var(--rsize) / 2);
+  top: calc(var(--ry) - var(--rsize) / 2);
+  width: var(--rsize);
+  height: var(--rsize);
+  background: radial-gradient(60% 90% at 50% 40%, color-mix(in oklab, var(--accent) 55%, transparent) 0%, transparent 70%),
+              radial-gradient(80% 80% at 55% 45%, color-mix(in oklab, var(--accent) 30%, transparent) 0%, transparent 72%);
+  transform: rotate(var(--rrot)) scale(0.4);
+  opacity: 0.45;
+  pointer-events: none;
+  border-radius: 60% 60% 65% 65% / 65% 65% 45% 45%; /* teardrop-like */
+  animation: nav-ripple 600ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+
+@keyframes nav-ripple {
+  0% { transform: rotate(var(--rrot)) scale(0.4); opacity: 0.5; }
+  70% { transform: rotate(var(--rrot)) scale(1.05); opacity: 0.25; }
+  100% { transform: rotate(var(--rrot)) scale(1.2); opacity: 0; }
+}
+
+.theme-toggle {
+  position: relative;
+  overflow: hidden;
+  width: 44px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0;
+  margin: 0.5rem 0.25rem;
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  outline: 2px solid color-mix(in oklab, var(--accent) 40%, transparent);
+}
+
+/* Animated icon push effect */
+.theme-toggle .icon {
+  position: absolute;
+  transition: transform 260ms cubic-bezier(.2, .8, .2, 1), opacity 260ms ease;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.theme-toggle.dark .icon.sun {
+  transform: translateY(140%);
+  opacity: 0;
+}
+
+.theme-toggle.dark .icon.moon {
+  transform: translateY(0%);
+  opacity: 1;
+}
+
+.theme-toggle.light .icon.sun {
+  transform: translateY(0%);
+  opacity: 1;
+}
+
+.theme-toggle.light .icon.moon {
+  transform: translateY(-140%);
+  opacity: 0;
+}
+
+.theme-toggle:active .icon {
+  transition-duration: 180ms;
+}
+
+/* Add horizontal breathing room for navbar on small screens */
+@media (max-width: 768px) {
+  .navbar .container {
+    padding-left: calc(1.5rem + env(safe-area-inset-left));
+    padding-right: calc(1.5rem + env(safe-area-inset-right));
+  }
+}
+
+/* Mobile drawer (slide-out) */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  /* hide small popover on mobile */
+  .hamburger-menu { display: none; }
+
+  .mobile-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    background: color-mix(in oklab, black 55%, transparent);
+    opacity: 1;
+  z-index: 9997;
+  }
+  .mobile-drawer {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: min(84vw, 360px);
+    background: transparent; /* inner panel provides surface */
+    border-left: none;
+  box-shadow: none; /* avoid faint box behind panel in light mode */
+    transform: translateX(0);
+  z-index: 9998;
+    display: grid;
+    align-content: start;
+    padding: 1rem;
+    animation: drawer-in 220ms cubic-bezier(.2,.8,.2,1);
+  }
+  .drawer-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1rem;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.75rem;
+    box-shadow: 0 10px 28px color-mix(in oklab, black 35%, transparent);
+  }
+  @keyframes drawer-in {
+    from { transform: translateX(16px); opacity: 0.92; }
+    to { transform: translateX(0); opacity: 1; }
+  }
+  .drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .drawer-title { font-weight: 700; }
+  .drawer-close {
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 0.2rem 0.5rem;
+    cursor: pointer;
+  }
+  .drawer-links {
+    display: grid;
+  gap: 0.75rem;
+  padding: 0.5rem 0 1rem 0;
+  }
+  .drawer-links a {
+    color: var(--text);
+    text-decoration: none;
+  padding: 0.8rem 0.9rem; /* larger tap targets */
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .drawer-links a.active,
+  .drawer-links a:hover { background: color-mix(in oklab, var(--accent) 18%, transparent); }
+  .drawer-icons { display: flex; gap: 0.75rem; }
+}

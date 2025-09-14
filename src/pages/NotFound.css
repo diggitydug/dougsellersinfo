@@ -1,0 +1,9 @@
+/* Not Found Page Styles */
+.not-found { 
+  text-align: center; 
+  padding: 2rem; 
+}
+
+.not-found h2 { 
+  margin-top: 0; 
+}

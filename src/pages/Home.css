@@ -1,0 +1,114 @@
+/* Home Page Styles */
+.home .hero {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 2rem 0 1rem;
+}
+
+.photo {
+  width: 140px;
+  height: 140px;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  border: 2px solid var(--border);
+  background: var(--card);
+}
+
+.photo-placeholder {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(ellipse at 70% 30%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 60%), var(--card);
+  border: 2px dashed color-mix(in oklab, var(--accent) 65%, transparent);
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 2rem;
+}
+
+.hero-text h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.hero-text p {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .home .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .photo {
+    margin: 0 auto;
+  }
+
+  .photo-placeholder {
+    margin: 0 auto;
+  }
+}
+
+/* Tech Grid Styles */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.tech-grid > div {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  transition: background-color 320ms ease, border-color 320ms ease;
+}
+
+.tech-grid > div:hover {
+  border-color: color-mix(in oklab, var(--accent) 30%, var(--border));
+}
+
+.tech-grid h3 { 
+  margin: 0 0 0.5rem; 
+  color: var(--text);
+}
+
+.tech-grid ul { 
+  margin: 0; 
+  padding-left: 1.1rem; 
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1200px) {
+  .tech-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .tech-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .tech-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tech-grid > div {
+    padding: 0.75rem;
+  }
+}
