@@ -59,5 +59,19 @@ section {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 1rem;
+  margin: 0 0.5rem;
   transition: background-color 320ms ease, border-color 320ms ease, color 320ms ease;
+}
+
+/* Increase side margins on smaller screens */
+@media (max-width: 768px) {
+  section {
+    margin: 0 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    margin: 0 1rem;
+  }
 }
