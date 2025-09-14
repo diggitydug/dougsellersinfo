@@ -49,6 +49,9 @@ body {
 /* Sections */
 main.container {
   padding: 1.5rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 section {

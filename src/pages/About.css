@@ -10,14 +10,52 @@
 
 .tech-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
+  margin-top: 1rem;
 }
-.tech-grid h3 { margin: 0 0 0.5rem; }
-.tech-grid ul { margin: 0; padding-left: 1.1rem; }
+
+.tech-grid > div {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  transition: background-color 320ms ease, border-color 320ms ease;
+}
+
+.tech-grid > div:hover {
+  border-color: color-mix(in oklab, var(--accent) 30%, var(--border));
+}
+
+.tech-grid h3 { 
+  margin: 0 0 0.5rem; 
+  color: var(--text);
+}
+
+.tech-grid ul { 
+  margin: 0; 
+  padding-left: 1.1rem; 
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1200px) {
+  .tech-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .tech-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
 
 @media (max-width: 640px) {
   .tech-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .tech-grid > div {
+    padding: 0.75rem;
   }
 }
