@@ -1,21 +1,33 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#00ff88" />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#00ff88" />
   <title>Doug Sellers | Portfolio</title>
   <link rel="icon" type="image/svg+xml" href="/src/assets/profile-photo.svg" />
-  </head>
-  <body>
-    <script>
-      try {
-        var t = localStorage.getItem('theme');
-        if (!t) t = 'dark';
-        document.documentElement.dataset.theme = t;
-      } catch (e) {}
-    </script>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-  </html>
+</head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8J2LS33ZVM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-8J2LS33ZVM');
+</script>
+
+<body>
+  <script>
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = 'dark';
+      document.documentElement.dataset.theme = t;
+    } catch (e) { }
+  </script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
+</html>
